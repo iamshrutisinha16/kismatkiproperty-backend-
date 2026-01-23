@@ -1,0 +1,12 @@
+const mongoose = require("mongoose");
+
+const leadSchema = new mongoose.Schema({
+  mobile: {
+    type: String,
+    required: true,
+    match: /^[0-9]{10}$/, 
+  },
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model("Lead", leadSchema);
