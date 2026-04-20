@@ -13,16 +13,13 @@ const app = express();
 const PORT = process.env.PORT || 3002;
 const uri = process.env.MONGO_URI;
 
-// Ensure uploads folder exists
-const uploadsPath = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadsPath)) fs.mkdirSync(uploadsPath);
 
 // Middleware
 app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://kismatkiproperty.com",
+      "https://kismatikproperty-eta.vercel.app",
       "https://www.kismatkiproperty.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -32,7 +29,6 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static(uploadsPath));
 
 // Session
 app.use(
@@ -53,12 +49,12 @@ passport.deserializeUser(User.deserializeUser());
 
 // Routes (ensure each route file exports Router object)
 const userRoutes = require("./routes/userRoutes");
-const propertyRoutes = require("./routes/propertyRoutes");
+const classifiedRoutes = require("./routes/classifiedRoutes");
 const leadRoutes = require("./routes/leadRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes"); 
 
 app.use("/api/users", userRoutes);
-app.use("/api/properties", propertyRoutes);
+app.use("/api", classifiedRoutes);
 app.use("/api/leads", leadRoutes);
 app.use("/api/inquiry", inquiryRoutes); 
 
