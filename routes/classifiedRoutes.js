@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const Classified = require("../models/Classified");
+const upload = require("../config/multer");
 
-// ❌ Galat: const multer = require("../config/multer");
-// ✅ Sahi: variable ka naam 'upload' rakhein kyunki niche aapne wahi use kiya hai
-const upload = require("../config/multer"); 
 
+// ✅ GET ALL
 router.get("/classified", async (req, res) => {
   try {
     const data = await Classified.find().sort({ createdAt: -1 });
@@ -15,31 +14,58 @@ router.get("/classified", async (req, res) => {
   }
 });
 
-// Ab ye 'upload' sahi kaam karega kyunki upar humne ise define kar diya hai
+
+// ✅ ADD
 router.post("/classified", upload.single("image"), async (req, res) => {
   try {
-    // Crash se bachne ke liye check karein ki file aayi hai ya nahi
     if (!req.file) {
-      return res.status(400).json({ error: "Please upload an image" });
+      return res.status(400).json({ error: "Image is required" });
     }
 
     const newData = new Classified({
+      image: req.file.path, // ✅ FIXED
       title: req.body.title,
       location: req.body.location,
-      bedrooms: req.body.bedrooms,
+      bedrooms: Number(req.body.bedrooms) || 0,
       price: req.body.price,
       agent: req.body.agent,
       contact: [req.body.contact],
-      image: req.file.path, 
     });
 
     await newData.save();
-    res.json({ message: "Uploaded successfully! ☁️" });
+
+    res.json({ message: "Added Successfully ✅" });
 
   } catch (err) {
-    console.error("Error in upload:", err);
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
+
+
+// ✅ DELETE
+router.delete("/classified/:id", async (req, res) => {
+  try {
+    await Classified.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted Successfully 🗑️" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// ✅ UPDATE (EDIT)
+router.put("/classified/:id", async (req, res) => {
+  try {
+    await Classified.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json({ message: "Updated Successfully ✏️" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 module.exports = router;

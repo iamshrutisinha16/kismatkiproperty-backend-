@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const classifiedSchema = new mongoose.Schema({
 
-Image: String,
+image: String,
 title: String,
 location: String,
 bedrooms: Number,
