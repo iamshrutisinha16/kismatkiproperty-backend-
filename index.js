@@ -52,9 +52,11 @@ const userRoutes = require("./routes/userRoutes");
 const classifiedRoutes = require("./routes/classifiedRoutes");
 const leadRoutes = require("./routes/leadRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes"); 
+const propertiesRoutes = require("./routes/propertiesRoutes");
 
 app.use("/api/users", userRoutes);
 app.use("/api", classifiedRoutes);
+app.use("/api", propertiesRoutes);
 app.use("/api/leads", leadRoutes);
 app.use("/api/inquiry", inquiryRoutes); 
 
