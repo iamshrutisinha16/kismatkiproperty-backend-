@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const propertiesSchema = new mongoose.Schema({
   image: String,
+  type: { type: String, enum: ['Buy', 'Rent', 'New Launch', 'Commercial', 'Projects'], required: true },
   title: String,
   location: String,
   bedrooms: Number,
