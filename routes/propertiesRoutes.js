@@ -33,6 +33,7 @@ router.post("/properties", upload.single("image"), async (req, res) => {
       price: req.body.price,
       area: req.body.area,
       tag: req.body.tag,
+      type: req.body.type,
     });
 
     await newData.save();
@@ -81,6 +82,7 @@ router.put("/properties/:id", async (req, res) => {
         price: req.body.price,
         area: req.body.area,
         tag: req.body.tag,
+        type: req.body.type,
       },
       { new: true }
     );
